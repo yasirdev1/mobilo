@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { register } = useAuth()
 const form = reactive({ name: '', phone: '', city: '', password: '' })
 const submitting = ref(false)
 const errorMsg = ref('')
@@ -7,10 +8,8 @@ async function submit() {
   errorMsg.value = ''
   submitting.value = true
   try {
-    // TODO: POST to Laravel API — /api/auth/register
-    // await $fetch('/api/auth/register', { method: 'POST', body: { ...form } })
-    // await navigateTo('/')
-    await new Promise((r) => setTimeout(r, 400)) // placeholder until the API is wired
+    await register({ name: form.name, phone: form.phone, password: form.password })
+    await navigateTo('/')
   } catch (e: any) {
     errorMsg.value = e?.data?.message || 'Could not create your account. Please try again.'
   } finally {

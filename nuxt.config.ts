@@ -6,6 +6,12 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['repositories'],
   },
+  runtimeConfig: {
+    public: {
+      // Laravel API base (Herd). Override in production via NUXT_PUBLIC_API_BASE.
+      apiBase: 'http://mobilo-backend.test/api',
+    },
+  },
   app: {
     head: {
       htmlAttrs: { lang: 'en' },

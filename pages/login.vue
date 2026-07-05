@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { login } = useAuth()
+const route = useRoute()
 const form = reactive({ phone: '', password: '' })
 const submitting = ref(false)
 const errorMsg = ref('')
@@ -7,10 +9,8 @@ async function submit() {
   errorMsg.value = ''
   submitting.value = true
   try {
-    // TODO: POST to Laravel API — /api/auth/login (Sanctum)
-    // await $fetch('/api/auth/login', { method: 'POST', body: { ...form } })
-    // await navigateTo('/')
-    await new Promise((r) => setTimeout(r, 400)) // placeholder until the API is wired
+    await login(form.phone, form.password)
+    await navigateTo((route.query.redirect as string) || '/')
   } catch (e: any) {
     errorMsg.value = e?.data?.message || 'Login failed. Please check your details and try again.'
   } finally {

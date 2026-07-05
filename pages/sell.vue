@@ -5,6 +5,8 @@
  */
 const route = useRoute()
 const repo = usePhoneRepository()
+const listingRepo = useUsedListingRepository()
+const { isLoggedIn } = useAuth()
 const { data: phones } = await useAsyncData('phones-sell', () => repo.all())
 
 const form = reactive({
@@ -51,12 +53,14 @@ function resetForm() {
 async function submit() {
   // Native `required` covers phone; enforce the chip-based & numeric fields here.
   if (!validate()) return
+  if (!isLoggedIn.value) {
+    return navigateTo('/login?redirect=/sell')
+  }
   submitError.value = ''
   submitting.value = true
   try {
-    // TODO: POST to Laravel API — /api/listings
-    // await $fetch('/api/listings', { method: 'POST', body: { ...form } })
-    await new Promise((r) => setTimeout(r, 400)) // placeholder until the API is wired
+    // Backend maps these human-friendly fields (phone/city by name, price, pta).
+    await listingRepo.create({ ...form })
     submitted.value = true
   } catch (e: any) {
     submitError.value = e?.data?.message || 'Could not submit your listing. Please try again.'

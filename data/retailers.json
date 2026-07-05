@@ -1,0 +1,6 @@
+[
+  { "retailer": "Daraz.pk", "price": 142500, "inStock": true, "lowest": true, "url": "https://daraz.pk" },
+  { "retailer": "PriceOye", "price": 143999, "inStock": true, "url": "https://priceoye.pk" },
+  { "retailer": "Mega.pk", "price": 144999, "inStock": true, "url": "https://mega.pk" },
+  { "retailer": "Telemart", "price": 146500, "inStock": false, "url": "https://telemart.pk" }
+]

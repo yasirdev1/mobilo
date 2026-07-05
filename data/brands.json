@@ -1,0 +1,10 @@
+[
+  { "name": "Samsung", "initial": "S", "count": 214 },
+  { "name": "Apple", "initial": "A", "count": 62 },
+  { "name": "Xiaomi", "initial": "X", "count": 178 },
+  { "name": "Infinix", "initial": "I", "count": 96 },
+  { "name": "Vivo", "initial": "V", "count": 88 },
+  { "name": "Oppo", "initial": "O", "count": 74 },
+  { "name": "Realme", "initial": "R", "count": 101 },
+  { "name": "Tecno", "initial": "T", "count": 83 }
+]

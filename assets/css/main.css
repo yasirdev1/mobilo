@@ -1,0 +1,60 @@
+/* Mobilo.pk base styles */
+
+:root {
+  /* Default brand = emerald. Seasonal themes override these on <html>
+     via useSeasonalTheme (composables/useSeasonalTheme.ts). */
+  --brand: #0b8a5c;
+  --brand-dark: #087a51;
+  --brand-tint: #e7f5ee;
+}
+
+body {
+  margin: 0;
+  background: #f6f8f7;
+  color: #14201b;
+  font-family: 'Instrument Sans', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::placeholder {
+  color: #8a968f;
+}
+
+/* Accessible keyboard focus for every interactive element.
+   Element selectors + !important so it overrides Tailwind's `outline-none`
+   utility (which several inputs use). Only shows for keyboard users. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--brand) !important;
+  outline-offset: 2px !important;
+  border-radius: 4px;
+}
+
+/* Respect users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Hidden horizontal scrollbars for card rails */
+.hscroll {
+  scrollbar-width: none;
+}
+.hscroll::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

@@ -1,0 +1,74 @@
+[
+  { "slug": "samsung-galaxy-a55", "name": "Samsung Galaxy A55", "brand": "Samsung", "price": 144999, "specsLine": "Exynos 1480 · 8/256GB · 5000mAh", "badge": "Value Pick", "launched": "March 2025",
+    "scores": { "performance": 8.7, "camera": 8.2, "battery": 7.4, "value": 8.5 },
+    "specs": {
+      "Display": { "Size": "6.6\" AMOLED", "Refresh rate": "120Hz", "Resolution": "1080 × 2340" },
+      "Performance": { "Chipset": "Exynos 1480", "RAM": "8GB", "Storage": "256GB" },
+      "Camera": { "Main": "50MP OIS", "Ultrawide": "12MP", "Selfie": "32MP" },
+      "Battery": { "Capacity": "5000mAh", "Charging": "25W" }
+    }
+  },
+  { "slug": "iphone-15", "name": "iPhone 15", "brand": "Apple", "price": 289999, "specsLine": "A16 Bionic · 6/128GB · 3349mAh", "launched": "September 2024",
+    "scores": { "performance": 9.3, "camera": 9.0, "battery": 7.8, "value": 6.1 },
+    "specs": {
+      "Display": { "Size": "6.1\" OLED", "Refresh rate": "60Hz", "Resolution": "1179 × 2556" },
+      "Performance": { "Chipset": "A16 Bionic", "RAM": "6GB", "Storage": "128GB" },
+      "Camera": { "Main": "48MP", "Ultrawide": "12MP", "Selfie": "12MP" },
+      "Battery": { "Capacity": "3349mAh", "Charging": "20W" }
+    }
+  },
+  { "slug": "poco-x6-pro", "name": "Poco X6 Pro", "brand": "Xiaomi", "price": 79999, "specsLine": "Dimensity 8300 · 12/256GB · 5000mAh", "badge": "Best Gaming", "launched": "January 2025",
+    "scores": { "performance": 8.9, "camera": 7.6, "battery": 8.1, "value": 9.2 },
+    "specs": {
+      "Display": { "Size": "6.67\" AMOLED", "Refresh rate": "120Hz", "Resolution": "1220 × 2712" },
+      "Performance": { "Chipset": "Dimensity 8300 Ultra", "RAM": "12GB", "Storage": "256GB" },
+      "Camera": { "Main": "64MP OIS", "Ultrawide": "8MP", "Selfie": "16MP" },
+      "Battery": { "Capacity": "5000mAh", "Charging": "67W" }
+    }
+  },
+  { "slug": "redmi-note-13-pro", "name": "Redmi Note 13 Pro", "brand": "Xiaomi", "price": 84999, "specsLine": "SD 7s Gen 2 · 8/256GB · 5100mAh", "launched": "February 2025",
+    "scores": { "performance": 8.0, "camera": 8.4, "battery": 8.3, "value": 8.8 },
+    "specs": {
+      "Display": { "Size": "6.67\" AMOLED", "Refresh rate": "120Hz", "Resolution": "1220 × 2712" },
+      "Performance": { "Chipset": "Snapdragon 7s Gen 2", "RAM": "8GB", "Storage": "256GB" },
+      "Camera": { "Main": "200MP OIS", "Ultrawide": "8MP", "Selfie": "16MP" },
+      "Battery": { "Capacity": "5100mAh", "Charging": "67W" }
+    }
+  },
+  { "slug": "vivo-v30", "name": "Vivo V30", "brand": "Vivo", "price": 159999, "specsLine": "SD 7 Gen 3 · 12/256GB · 5000mAh", "badge": "Best Camera", "launched": "March 2025",
+    "scores": { "performance": 8.2, "camera": 8.9, "battery": 8.0, "value": 7.4 },
+    "specs": {
+      "Display": { "Size": "6.78\" AMOLED", "Refresh rate": "120Hz", "Resolution": "1260 × 2800" },
+      "Performance": { "Chipset": "Snapdragon 7 Gen 3", "RAM": "12GB", "Storage": "256GB" },
+      "Camera": { "Main": "50MP OIS", "Ultrawide": "50MP", "Selfie": "50MP" },
+      "Battery": { "Capacity": "5000mAh", "Charging": "80W" }
+    }
+  },
+  { "slug": "infinix-note-40", "name": "Infinix Note 40", "brand": "Infinix", "price": 54999, "specsLine": "Helio G99 · 8/256GB · 5000mAh", "launched": "April 2025",
+    "scores": { "performance": 7.1, "camera": 7.3, "battery": 8.2, "value": 8.9 },
+    "specs": {
+      "Display": { "Size": "6.78\" AMOLED", "Refresh rate": "120Hz", "Resolution": "1080 × 2436" },
+      "Performance": { "Chipset": "Helio G99 Ultimate", "RAM": "8GB", "Storage": "256GB" },
+      "Camera": { "Main": "108MP", "Ultrawide": "2MP", "Selfie": "32MP" },
+      "Battery": { "Capacity": "5000mAh", "Charging": "45W" }
+    }
+  },
+  { "slug": "galaxy-s24-fe", "name": "Galaxy S24 FE", "brand": "Samsung", "price": 219999, "specsLine": "Exynos 2400e · 8/256GB · 4700mAh", "launched": "October 2025",
+    "scores": { "performance": 9.0, "camera": 8.6, "battery": 7.7, "value": 7.2 },
+    "specs": {
+      "Display": { "Size": "6.7\" AMOLED", "Refresh rate": "120Hz", "Resolution": "1080 × 2340" },
+      "Performance": { "Chipset": "Exynos 2400e", "RAM": "8GB", "Storage": "256GB" },
+      "Camera": { "Main": "50MP OIS", "Ultrawide": "12MP", "Selfie": "10MP" },
+      "Battery": { "Capacity": "4700mAh", "Charging": "25W" }
+    }
+  },
+  { "slug": "tecno-camon-30", "name": "Tecno Camon 30", "brand": "Tecno", "price": 62999, "specsLine": "Helio G99 · 8/256GB · 5000mAh", "launched": "May 2025",
+    "scores": { "performance": 7.0, "camera": 7.8, "battery": 8.0, "value": 8.4 },
+    "specs": {
+      "Display": { "Size": "6.78\" AMOLED", "Refresh rate": "120Hz", "Resolution": "1080 × 2436" },
+      "Performance": { "Chipset": "Helio G99", "RAM": "8GB", "Storage": "256GB" },
+      "Camera": { "Main": "50MP", "Ultrawide": "2MP", "Selfie": "50MP" },
+      "Battery": { "Capacity": "5000mAh", "Charging": "70W" }
+    }
+  }
+]

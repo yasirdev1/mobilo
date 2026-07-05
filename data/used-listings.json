@@ -1,0 +1,14 @@
+[
+  { "id": "u1001", "title": "iPhone 13 · 128GB", "price": 189000, "ptaApproved": true, "condition": "Excellent", "city": "Lahore", "posted": "2 days ago",
+    "seller": { "name": "Ahmed R.", "verified": true, "memberSince": "2023", "city": "Lahore", "sold": 14, "rating": 4.9, "replyTime": "< 1h" } },
+  { "id": "u1002", "title": "Galaxy S23 · 256GB", "price": 175000, "ptaApproved": true, "condition": "Like New", "city": "Karachi", "posted": "5 hours ago",
+    "seller": { "name": "Sana K.", "verified": true, "memberSince": "2024", "city": "Karachi", "sold": 6, "rating": 4.7, "replyTime": "< 2h" } },
+  { "id": "u1003", "title": "Poco X6 Pro · 256GB", "price": 62500, "ptaApproved": false, "condition": "Good", "city": "Islamabad", "posted": "1 day ago",
+    "seller": { "name": "Bilal T.", "verified": false, "memberSince": "2025", "city": "Islamabad", "sold": 2, "rating": 4.3, "replyTime": "< 4h" } },
+  { "id": "u1004", "title": "iPhone 12 · 64GB", "price": 132000, "ptaApproved": true, "condition": "Good", "city": "Rawalpindi", "posted": "3 days ago",
+    "seller": { "name": "Usman A.", "verified": true, "memberSince": "2022", "city": "Rawalpindi", "sold": 21, "rating": 4.8, "replyTime": "< 1h" } },
+  { "id": "u1005", "title": "Galaxy A54 · 128GB", "price": 89000, "ptaApproved": true, "condition": "Excellent", "city": "Faisalabad", "posted": "6 hours ago",
+    "seller": { "name": "Hira M.", "verified": true, "memberSince": "2024", "city": "Faisalabad", "sold": 4, "rating": 5.0, "replyTime": "< 3h" } },
+  { "id": "u1006", "title": "Redmi Note 12 · 128GB", "price": 46500, "ptaApproved": false, "condition": "Fair", "city": "Multan", "posted": "4 days ago",
+    "seller": { "name": "Zain W.", "verified": false, "memberSince": "2025", "city": "Multan", "sold": 1, "rating": 4.0, "replyTime": "< 6h" } }
+]

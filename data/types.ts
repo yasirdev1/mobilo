@@ -8,9 +8,18 @@ export interface Phone {
   specsLine: string // e.g. "Exynos 1480 · 8/256GB · 5000mAh"
   badge?: string // e.g. "Value Pick", "Best Gaming"
   image?: string
+  images?: string[] // gallery (detail endpoint only)
   launched?: string
   scores?: { performance: number; camera: number; battery: number; value: number }
   specs?: Record<string, Record<string, string>> // section → { label: value }
+  processor?: {
+    name: string
+    slug?: string
+    rating?: number
+    antutu?: number
+    geekbenchSingle?: number
+    geekbenchMulti?: number
+  }
 }
 
 export interface RetailerPrice {

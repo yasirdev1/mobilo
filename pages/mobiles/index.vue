@@ -102,6 +102,27 @@ const visible = computed(() => sorted.value.slice(0, visibleCount.value))
 const canLoadMore = computed(() => visibleCount.value < sorted.value.length)
 // Reset paging whenever the result set or sort changes.
 watch([filtered, sort], () => (visibleCount.value = PAGE))
+
+// Infinite scroll: auto-load the next page when the sentinel enters the viewport.
+const sentinel = ref<HTMLElement | null>(null)
+let observer: IntersectionObserver | null = null
+
+onMounted(() => {
+  observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0]?.isIntersecting && canLoadMore.value) visibleCount.value += PAGE
+    },
+    { rootMargin: '300px' }, // start loading a bit before it's fully visible
+  )
+  if (sentinel.value) observer.observe(sentinel.value)
+})
+// Re-observe when the sentinel is added/removed (e.g. when canLoadMore flips).
+watch(sentinel, (el) => {
+  if (!observer) return
+  observer.disconnect()
+  if (el) observer.observe(el)
+})
+onBeforeUnmount(() => observer?.disconnect())
 </script>
 
 <template>
@@ -164,14 +185,10 @@ watch([filtered, sort], () => (visibleCount.value = PAGE))
           <div class="grid grid-cols-2 gap-3 lg:grid-cols-3">
             <MobileCard v-for="p in visible" :key="p.slug" :phone="p" />
           </div>
-          <div v-if="canLoadMore" class="mt-5 flex justify-center">
-            <button
-              type="button"
-              class="inline-flex h-11 items-center rounded-btn border border-line bg-white px-6 text-[13.5px] font-semibold text-ink hover:bg-mist"
-              @click="visibleCount += PAGE"
-            >
-              Load more ({{ sorted.length - visible.length }} left)
-            </button>
+          <!-- Infinite-scroll sentinel: loads more when it scrolls into view. -->
+          <div v-if="canLoadMore" ref="sentinel" class="mt-5 flex items-center justify-center gap-2 py-4 text-[13px] text-slate">
+            <span class="h-4 w-4 animate-spin rounded-full border-2 border-line border-t-brand" />
+            Loading more…
           </div>
         </template>
 

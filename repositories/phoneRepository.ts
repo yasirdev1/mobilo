@@ -9,6 +9,7 @@ import type { Phone, RetailerPrice, Brand } from '~/data/types'
 export interface PhoneRepository {
   all(): Promise<Phone[]>
   bySlug(slug: string): Promise<Phone | undefined>
+  compare(slugs: string[]): Promise<Phone[]>
   search(query: string): Promise<Phone[]>
   brands(): Promise<Brand[]>
   retailerPrices(slug: string): Promise<RetailerPrice[]>
@@ -20,6 +21,8 @@ export function usePhoneRepository(): PhoneRepository {
   return {
     all: () => $api<Phone[]>('/phones'),
     bySlug: (slug: string) => $api<Phone>(`/phones/${slug}`),
+    compare: (slugs: string[]) =>
+      slugs.length ? $api<Phone[]>('/phones/compare', { query: { slugs: slugs.join(',') } }) : Promise.resolve([]),
     search: (query: string) =>
       query.trim() ? $api<Phone[]>('/phones/search', { query: { q: query } }) : Promise.resolve([]),
     brands: () => $api<Brand[]>('/brands'),

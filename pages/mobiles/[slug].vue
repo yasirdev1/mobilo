@@ -16,6 +16,16 @@ if (!phone.value) {
 
 const sections = computed(() => Object.entries(phone.value?.specs ?? {}))
 
+// Image gallery: cover first, then the scraped gallery images (deduped).
+const gallery = computed(() => {
+  const imgs = [phone.value?.image, ...(phone.value?.images ?? [])].filter(Boolean) as string[]
+  return [...new Set(imgs)]
+})
+const activeImage = ref<string | undefined>()
+watchEffect(() => {
+  activeImage.value = gallery.value[0]
+})
+
 // Related phones — same brand first, then closest by price. Loaded lazily
 // (non-critical) so it can show a skeleton without blocking the main content.
 const { data: related, pending: relatedPending } = useLazyAsyncData(`related-${slug}`, async () => {
@@ -101,8 +111,23 @@ useHead(() => ({
       <div class="flex flex-col gap-6">
         <!-- Header card -->
         <div class="flex flex-col gap-4 rounded-card border border-line bg-white p-5 sm:flex-row">
-          <div class="grid h-[220px] w-full flex-none place-items-center rounded-xl bg-mist sm:w-[180px]">
-            <img v-if="phone.image" :src="phone.image" :alt="phone.name" class="h-full w-full object-contain" />
+          <div class="flex w-full flex-none flex-col gap-2 sm:w-[180px]">
+            <div class="grid h-[220px] w-full place-items-center rounded-xl bg-mist">
+              <img v-if="activeImage" :src="activeImage" :alt="phone.name" class="h-full w-full object-contain" />
+            </div>
+            <div v-if="gallery.length > 1" class="flex flex-wrap gap-1.5">
+              <button
+                v-for="(img, i) in gallery"
+                :key="i"
+                type="button"
+                class="h-12 w-12 overflow-hidden rounded-lg border bg-mist p-0.5 transition"
+                :class="img === activeImage ? 'border-brand ring-1 ring-brand' : 'border-line'"
+                :aria-label="`Show image ${i + 1}`"
+                @click="activeImage = img"
+              >
+                <img :src="img" :alt="`${phone.name} image ${i + 1}`" class="h-full w-full object-contain" />
+              </button>
+            </div>
           </div>
           <div class="flex flex-col gap-3">
             <h1 class="m-0 font-display text-[clamp(22px,3vw,28px)] font-extrabold tracking-tight">{{ phone.name }}</h1>

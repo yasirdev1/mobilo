@@ -6,6 +6,7 @@ const router = useRouter()
 const repo = usePhoneRepository()
 const { format } = usePrice()
 
+// Lightweight list powers the "add phone" search box.
 const { data: allPhones } = await useAsyncData('phones-compare', () => repo.all())
 
 const slugs = ref<string[]>(
@@ -15,9 +16,14 @@ const slugs = ref<string[]>(
 )
 watch(slugs, (v) => router.replace({ query: { phones: v.join(',') || undefined } }), { deep: true })
 
-const phones = computed<Phone[]>(() =>
-  slugs.value.map((s) => (allPhones.value ?? []).find((p) => p.slug === s)).filter(Boolean) as Phone[],
+// Compared phones come from the dedicated endpoint so each includes full specs
+// and the matched processor's benchmark scores. Refetches when the set changes.
+const { data: comparePhones } = await useAsyncData(
+  'compare-phones',
+  () => (slugs.value.length ? repo.compare(slugs.value) : Promise.resolve([])),
+  { watch: [slugs] },
 )
+const phones = computed<Phone[]>(() => comparePhones.value ?? [])
 
 const view = ref<'▦ Table View' | '☰ By Spec'>('▦ Table View')
 const query = ref('')
@@ -35,6 +41,26 @@ function remove(slug: string) {
   slugs.value = slugs.value.filter((s) => s !== slug)
 }
 
+// Winner highlighting is only meaningful for a few unambiguous single-number
+// specs. Things like Resolution ("1440 x 3120"), Dimensions, or multi-camera
+// strings can't be compared by one number, so we leave them unhighlighted
+// rather than guess wrong.
+const HIGHER_BETTER = ['capacity', 'refresh rate'] // battery mAh, Hz
+const LOWER_BETTER = ['weight'] // grams
+function specWinner(label: string, values: string[]): number {
+  const key = label.trim().toLowerCase()
+  const higher = HIGHER_BETTER.includes(key)
+  const lower = LOWER_BETTER.includes(key)
+  if (!higher && !lower) return -1
+  const nums = values.map((v) => {
+    const m = String(v).match(/[\d.]+/) // first number only
+    return m ? parseFloat(m[0]) : NaN
+  })
+  const valid = nums.filter((n) => !isNaN(n))
+  if (valid.length < 2 || new Set(valid).size < 2) return -1
+  return nums.indexOf(higher ? Math.max(...valid) : Math.min(...valid))
+}
+
 /** All spec rows across sections, with winner detection for numeric-ish values. */
 const specSections = computed(() => {
   const sections = new Map<string, Set<string>>()
@@ -48,12 +74,51 @@ const specSections = computed(() => {
     section: sec,
     rows: [...labels].map((label) => {
       const values = phones.value.map((p) => p.specs?.[sec]?.[label] ?? '—')
-      const nums = values.map((v) => parseFloat(v.replace(/[^\d.]/g, '')))
-      const valid = nums.filter((n) => !isNaN(n))
-      const winner = valid.length > 1 && new Set(valid).size > 1 ? nums.indexOf(Math.max(...valid)) : -1
-      return { label, values, winner }
+      return { label, values, winner: specWinner(label, values) }
     }),
   }))
+})
+
+// Benchmark rows (from the matched NanoReview SoC) + which chip is superior.
+const processorMetrics = computed(() => {
+  if (!phones.value.some((p) => p.processor)) return null
+  const metric = (label: string, key: 'rating' | 'antutu' | 'geekbenchSingle' | 'geekbenchMulti') => {
+    const nums = phones.value.map((p) => (p.processor?.[key] as number | undefined) ?? NaN)
+    const valid = nums.filter((n) => !isNaN(n))
+    const winner = valid.length > 1 && new Set(valid).size > 1 ? nums.indexOf(Math.max(...valid)) : -1
+    return { label, values: nums.map((n) => (isNaN(n) ? '—' : n.toLocaleString())), winner }
+  }
+  // Superior chip overall = highest NanoReview rating (fallback AnTuTu).
+  const overall = phones.value.map((p) => p.processor?.rating ?? p.processor?.antutu ?? NaN)
+  const valid = overall.filter((n) => !isNaN(n))
+  const chipWinner = valid.length > 1 && new Set(valid).size > 1 ? overall.indexOf(Math.max(...valid)) : -1
+  return {
+    chipWinner,
+    rows: [
+      metric('NanoReview rating', 'rating'),
+      metric('AnTuTu', 'antutu'),
+      metric('Geekbench single', 'geekbenchSingle'),
+      metric('Geekbench multi', 'geekbenchMulti'),
+    ],
+  }
+})
+
+// Merge the benchmark rows into the scraped "Processor" section so the chip
+// specs and its scores live together, and highlight the superior chipset.
+const allSections = computed(() => {
+  const sections = specSections.value.map((s) => ({ section: s.section, rows: s.rows.map((r) => ({ ...r })) }))
+  const pm = processorMetrics.value
+  if (!pm) return sections
+
+  const idx = sections.findIndex((s) => s.section.toLowerCase() === 'processor')
+  if (idx >= 0) {
+    sections[idx].rows = sections[idx].rows.map((r) =>
+      r.label.toLowerCase() === 'chipset' && pm.chipWinner >= 0 ? { ...r, winner: pm.chipWinner } : r,
+    )
+    sections[idx].rows.push(...pm.rows)
+    return sections
+  }
+  return [{ section: 'Processor', rows: pm.rows }, ...sections]
 })
 
 const dotColors = ['#0b8a5c', '#2f6fed', '#9a6b1f', '#b42318']
@@ -121,14 +186,16 @@ useSeoMeta({
         <div class="grid border-b border-line" :style="{ gridTemplateColumns: `120px repeat(${phones.length}, 1fr)` }">
           <div class="bg-canvas" />
           <div v-for="(p, i) in phones" :key="p.slug" class="border-l border-hairline p-3.5">
-            <div class="mb-2 h-16 rounded-lg bg-mist" />
+            <div class="mb-2 grid h-16 place-items-center rounded-lg bg-mist">
+              <img v-if="p.image" :src="p.image" :alt="p.name" class="max-h-14 w-auto max-w-full object-contain" />
+            </div>
             <div class="flex items-center gap-1.5 font-display text-[13px] font-semibold">
               <span class="h-2 w-2 flex-none rounded-full" :style="{ background: dotColors[i] }" />{{ p.name }}
             </div>
             <div class="mt-1 font-display text-sm font-bold tabular-nums">{{ format(p.price) }}</div>
           </div>
         </div>
-        <template v-for="sec in specSections" :key="sec.section">
+        <template v-for="sec in allSections" :key="sec.section">
           <div class="bg-canvas px-3.5 py-2 text-[11.5px] font-bold uppercase tracking-[0.05em]">{{ sec.section }}</div>
           <div
             v-for="row in sec.rows"
@@ -152,7 +219,7 @@ useSeoMeta({
 
     <!-- By-spec view -->
     <div v-else class="flex max-w-[560px] flex-col gap-4">
-      <div v-for="sec in specSections" :key="sec.section" class="overflow-hidden rounded-xl border border-line bg-white">
+      <div v-for="sec in allSections" :key="sec.section" class="overflow-hidden rounded-xl border border-line bg-white">
         <div class="border-b border-mist bg-canvas px-3.5 py-2.5 text-[11.5px] font-bold uppercase tracking-[0.05em]">{{ sec.section }}</div>
         <div v-for="row in sec.rows" :key="row.label">
           <div class="px-3.5 pb-1 pt-2.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">{{ row.label }}</div>
